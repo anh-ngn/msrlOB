@@ -20,7 +20,6 @@ GAMMA = 0.9
 MEMORY_CAPACITY = 1000
 Q_NETWORK_ITERATION = 100
 epochs = 50
-epochs = 10
 NUM_ACTIONS = 6
 his_actions = 4
 subscale = 3/4
