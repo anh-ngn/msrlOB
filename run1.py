@@ -239,7 +239,7 @@ def main(args):
     print("model loaded")
 
     image_names = np.array(load_images_names_in_data_set(
-        'aeroplane_test', path_voc_test))
+        'aeroplane_trainval', path_voc))
     single_plane_image_names = []
     single_plane_image_gts = []
     for image_name in image_names:
