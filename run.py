@@ -291,7 +291,7 @@ def main(args):
     total_iou = 0
     for index, image_name in enumerate(single_plane_image_names):
         image_path = os.path.join(
-            path_voc_test + "JPEGImages", image_name + ".jpg")
+            path_voc + "JPEGImages", image_name + ".jpg")
         image_original = Image.open(image_path)
         width, height = image_original.size
         bbx_gt = single_plane_image_gts[index]
