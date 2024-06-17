@@ -317,7 +317,7 @@ def demo_single_image(args, image_name):
         pretrained=True).features.to(device)
     dqn = DQN(device)
     dqn.eval_net.load_state_dict(torch.load(
-        'eval_net.pth', map_location=torch.device('cpu')))
+        'eval_net.pth'))
     dqn.eval_net.eval()
     dqn.eval_net.to(device)
 
