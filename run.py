@@ -20,6 +20,7 @@ GAMMA = 0.9
 MEMORY_CAPACITY = 1000
 Q_NETWORK_ITERATION = 100
 epochs = 50
+epochs = 100
 NUM_ACTIONS = 6
 his_actions = 4
 subscale = 3/4
@@ -206,7 +207,7 @@ def main(args):
             step = 0
             while (step < 10):
                 iou = cal_iou(bbx, bbx_gt)
-                if iou > 0.5:
+                if iou > 0.4:
                     action = 5
                 else:
                     action = dqn.choose_action(state, EPISILO)
