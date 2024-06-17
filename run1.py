@@ -310,6 +310,7 @@ def main(args):
     print("average IOU is {:.3f}".format(
         total_iou/len(single_plane_image_names)))
 
+
 def demo_single_image(args, image_name):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     feature_extractor = torchvision.models.vgg16(
@@ -336,7 +337,7 @@ def demo_single_image(args, image_name):
     bbx = [0, width, 0, height]
     history_action = np.zeros(his_actions*NUM_ACTIONS)
     with torch.no_grad():
-        vector = feature_extractor( 
+        vector = feature_extractor(
             image).cpu().detach().numpy().reshape(7*7*512)
     state = np.concatenate([history_action, vector])
     step = 0
@@ -379,7 +380,8 @@ def demo_single_image(args, image_name):
         draw = ImageDraw.Draw(image_original)
 
         draw.rectangle([bbx[0], bbx[2], bbx[1], bbx[3]], outline='red')
-        draw.rectangle([bbx_gt[0], bbx_gt[2], bbx_gt[1], bbx_gt[3]], outline='blue')
+        draw.rectangle([bbx_gt[0], bbx_gt[2], bbx_gt[1],
+                       bbx_gt[3]], outline='blue')
         image_original.show()
         # save image
         image_original.save('output/{}_step{}.jpg'.format(image_name, step))
@@ -388,6 +390,8 @@ def demo_single_image(args, image_name):
     print("Final bounding box:", bbx)
     print("Ground truth bounding box:", bbx_gt)
     print("Final IOU:", cal_iou(bbx, bbx_gt))
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Hierarchical Object Detection with Deep Reinforcement Learning')
@@ -398,6 +402,6 @@ if __name__ == '__main__':
     parser.add_argument('--Subscale', type=float, default=3/4)
     parser.add_argument('--image_name', type=str, default='001373',
                         help='name of the image for demonstration')
-    main(parser.parse_args())
+    # main(parser.parse_args())
     args = parser.parse_args()
     demo_single_image(args, args.image_name)
