@@ -20,6 +20,7 @@ GAMMA = 0.9
 MEMORY_CAPACITY = 1000
 Q_NETWORK_ITERATION = 100
 epochs = 50
+epochs = 10
 NUM_ACTIONS = 6
 his_actions = 4
 subscale = 1/2
@@ -90,7 +91,7 @@ class DQN():
         q_target = torch.where(
             batch_action != 5, q_target_unterminated, batch_reward)
         loss = self.loss_func(q_eval, q_target)
-        print("step loss is {:.3f}".format(loss.cpu().detach().item()))
+        # print("step loss is {:.3f}".format(loss.cpu().detach().item()))
 
         self.optimizer.zero_grad()
         loss.backward()
@@ -145,6 +146,12 @@ def update_bbx(bbx, action):
     elif action == 5:
         new_bbx = bbx
     return new_bbx
+
+
+def draw_bounding_box(image, bbx, epoch, step, image_name):
+    draw = ImageDraw.Draw(image)
+    draw.rectangle([bbx[0], bbx[2], bbx[1], bbx[3]], outline="red", width=2)
+    image.save(f"bounding_box_{image_name}_epoch_{epoch}_step_{step}.jpg")
 
 
 def main(args):
@@ -227,8 +234,13 @@ def main(args):
                 ep_reward += reward
 
                 if dqn.memory_counter >= MEMORY_CAPACITY:
-                    print("episode: {},".format(i), end=' ')
+                    # print("episode: {},".format(i), end=' ')
                     dqn.learn()
+
+                # Save bounding box for image 009472 after each 10 epochs
+                if image_name == "009472" and (i + 1) % 10 == 0:
+                    draw_bounding_box(image_original, bbx,
+                                      i + 1, step, image_name)
 
                 # termation
                 if action == 5:
@@ -258,8 +270,10 @@ def main(args):
     print("model loaded")
 
     # calculate the average IOU over test set
+    # image_names = np.array(load_images_names_in_data_set(
+    #     'aeroplane_test', path_voc_test))
     image_names = np.array(load_images_names_in_data_set(
-        'aeroplane_test', path_voc_test))
+        'aeroplane_trainval', path_voc))
     single_plane_image_names = []
     single_plane_image_gts = []
     for image_name in image_names:
@@ -293,7 +307,7 @@ def main(args):
         step = 0
         while (step < 10):
             iou = cal_iou(bbx, bbx_gt)
-            if iou > 0.5:
+            if iou > 0.4:
                 action = 5
             else:
                 action = dqn.choose_action(state, EPISILO)
