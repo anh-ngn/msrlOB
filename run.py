@@ -309,7 +309,7 @@ def main(args):
             if iou > 0.4:
                 action = 5
             else:
-                action = dqn.choose_action(state, EPISILO)
+                action = dqn.choose_action(state, 0.1)
             new_bbx = update_bbx(bbx, action)
             if action == 5:
                 break
