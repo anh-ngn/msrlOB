@@ -115,67 +115,37 @@ def inter_process(image, bbx, transform=None):
     return image_crop.unsqueeze(0)
 
 
-# def update_bbx(bbx, action):
-#     new_bbx = np.zeros(4)
-#     if action == 0:  # top left
-#         new_bbx[0] = bbx[0]  # x1
-#         new_bbx[1] = bbx[0] + (bbx[1]-bbx[0]) * subscale  # x2
-#         new_bbx[2] = bbx[2]  # y1
-#         new_bbx[3] = bbx[2] + (bbx[3]-bbx[2]) * subscale  # y2
-#     elif action == 1:  # top right
-#         new_bbx[0] = bbx[1] - (bbx[1]-bbx[0]) * subscale  # x1
-#         new_bbx[1] = bbx[1]  # x2
-#         new_bbx[2] = bbx[2]  # y1
-#         new_bbx[3] = bbx[2] + (bbx[3]-bbx[2]) * subscale  # y2
-#     elif action == 2:  # lower left
-#         new_bbx[0] = bbx[0]  # x1
-#         new_bbx[1] = bbx[0] + (bbx[1]-bbx[0]) * subscale  # x2
-#         new_bbx[2] = bbx[3] - (bbx[3]-bbx[2]) * subscale  # y1
-#         new_bbx[3] = bbx[3]  # y2
-#     elif action == 3:  # lower right
-#         new_bbx[0] = bbx[1] - (bbx[1]-bbx[0]) * subscale  # x1
-#         new_bbx[1] = bbx[1]  # x2
-#         new_bbx[2] = bbx[3] - (bbx[3]-bbx[2]) * subscale  # y1
-#         new_bbx[3] = bbx[3]  # y2
-#     elif action == 4:  # center
-#         new_bbx[0] = (bbx[0]+bbx[1])/2-(bbx[1]-bbx[0]) * subscale/2  # x1
-#         new_bbx[1] = (bbx[0]+bbx[1])/2+(bbx[1]-bbx[0]) * subscale/2  # x2
-#         new_bbx[2] = (bbx[2]+bbx[3])/2-(bbx[3]-bbx[2]) * subscale/2  # y1
-#         new_bbx[3] = (bbx[2]+bbx[3])/2+(bbx[3]-bbx[2]) * subscale/2  # y2
-#     elif action == 5:
-#         new_bbx = bbx
-#     return new_bbx
-
 def update_bbx(bbx, action):
     new_bbx = np.zeros(4)
-    if action == 0:  # left
+    if action == 0:  # top left
         new_bbx[0] = bbx[0]  # x1
         new_bbx[1] = bbx[0] + (bbx[1]-bbx[0]) * subscale  # x2
         new_bbx[2] = bbx[2]  # y1
-        new_bbx[3] = bbx[3] #+ (bbx[3]-bbx[2]) * subscale  # y2
-    elif action == 1:  # right
+        new_bbx[3] = bbx[2] + (bbx[3]-bbx[2]) * subscale  # y2
+    elif action == 1:  # top right
         new_bbx[0] = bbx[1] - (bbx[1]-bbx[0]) * subscale  # x1
         new_bbx[1] = bbx[1]  # x2
         new_bbx[2] = bbx[2]  # y1
-        new_bbx[3] = bbx[3] # + (bbx[3]-bbx[2]) * subscale  # y2
-    elif action == 2:  # lower 
+        new_bbx[3] = bbx[2] + (bbx[3]-bbx[2]) * subscale  # y2
+    elif action == 2:  # lower left
         new_bbx[0] = bbx[0]  # x1
-        new_bbx[1] = bbx[1] #+ (bbx[1]-bbx[0]) * subscale  # x2
+        new_bbx[1] = bbx[0] + (bbx[1]-bbx[0]) * subscale  # x2
         new_bbx[2] = bbx[3] - (bbx[3]-bbx[2]) * subscale  # y1
         new_bbx[3] = bbx[3]  # y2
-    elif action == 3:  # top
-        new_bbx[0] = bbx[0]  #- (bbx[1]-bbx[0]) * subscale  # x1
+    elif action == 3:  # lower right
+        new_bbx[0] = bbx[1] - (bbx[1]-bbx[0]) * subscale  # x1
         new_bbx[1] = bbx[1]  # x2
-        new_bbx[2] = bbx[2]  # y1
-        new_bbx[3] = bbx[2] + (bbx[3]-bbx[2]) * subscale  # y2
+        new_bbx[2] = bbx[3] - (bbx[3]-bbx[2]) * subscale  # y1
+        new_bbx[3] = bbx[3]  # y2
     elif action == 4:  # center
-        new_bbx[0] = (bbx[0]+bbx[1])/2-(bbx[1]-bbx[0]) * subscale  # x1
-        new_bbx[1] = (bbx[0]+bbx[1])/2+(bbx[1]-bbx[0]) * subscale  # x2
-        new_bbx[2] = (bbx[2]+bbx[3])/2-(bbx[3]-bbx[2]) * subscale  # y1
-        new_bbx[3] = (bbx[2]+bbx[3])/2+(bbx[3]-bbx[2]) * subscale  # y2
+        new_bbx[0] = (bbx[0]+bbx[1])/2-(bbx[1]-bbx[0]) * subscale/2  # x1
+        new_bbx[1] = (bbx[0]+bbx[1])/2+(bbx[1]-bbx[0]) * subscale/2  # x2
+        new_bbx[2] = (bbx[2]+bbx[3])/2-(bbx[3]-bbx[2]) * subscale/2  # y1
+        new_bbx[3] = (bbx[2]+bbx[3])/2+(bbx[3]-bbx[2]) * subscale/2  # y2
     elif action == 5:
         new_bbx = bbx
     return new_bbx
+
 
 def main(args):
     # best reward is set to -inf
@@ -418,7 +388,6 @@ def demo_single_image(args, image_name):
     print("Final bounding box:", bbx)
     print("Ground truth bounding box:", bbx_gt)
     print("Final IOU:", cal_iou(bbx, bbx_gt))
-    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Hierarchical Object Detection with Deep Reinforcement Learning')
