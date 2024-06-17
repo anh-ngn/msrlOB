@@ -210,6 +210,10 @@ def main(args):
                     print("episode: {},".format(i), end=' ')
                     dqn.learn()
 
+                if image_name == "001012" and (i + 1) % 10 == 0:
+                    draw_bounding_box(image_original, bbx,
+                                      i + 1, step, image_name)
+
                 if action == 5:
                     break
 
@@ -218,9 +222,6 @@ def main(args):
                 step += 1
 
                 # Save bounding box for image 009472 after each 10 epochs
-                if image_name == "009472" and (i + 1) % 10 == 0:
-                    draw_bounding_box(image_original, bbx,
-                                      i + 1, step, image_name)
 
         if EPISILO > 0.1:
             EPISILO -= 0.05
