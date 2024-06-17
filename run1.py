@@ -398,6 +398,6 @@ if __name__ == '__main__':
     parser.add_argument('--Subscale', type=float, default=3/4)
     parser.add_argument('--image_name', type=str, default='001373',
                         help='name of the image for demonstration')
-    #main(parser.parse_args())
+    main(parser.parse_args())
     args = parser.parse_args()
     demo_single_image(args, args.image_name)
