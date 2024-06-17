@@ -81,7 +81,7 @@ class DQN():
         q_target = torch.where(
             batch_action != 5, q_target_unterminated, batch_reward)
         loss = self.loss_func(q_eval, q_target)
-        print("step loss is {:.3f}".format(loss.cpu().detach().item()))
+        # print("step loss is {:.3f}".format(loss.cpu().detach().item()))
 
         self.optimizer.zero_grad()
         loss.backward()
@@ -137,6 +137,7 @@ def update_bbx(bbx, action):
 def draw_bounding_box(image, bbx, epoch, step, image_name):
     draw = ImageDraw.Draw(image)
     draw.rectangle([bbx[0], bbx[2], bbx[1], bbx[3]], outline="red", width=2)
+    print(image_name, epoch, step)
     image.save(f"bounding_box_{image_name}_epoch_{epoch}_step_{step}.jpg")
 
 
