@@ -278,7 +278,7 @@ def main(args):
     single_plane_image_gts = []
     for image_name in image_names:
         annotation = get_bb_of_gt_from_pascal_xml_annotation(
-            image_name, path_voc_test)
+            image_name, path_voc)
         if (len(annotation) > 1):
             continue
         single_plane_image_names.append(image_name)
