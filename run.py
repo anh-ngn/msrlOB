@@ -21,6 +21,8 @@ MEMORY_CAPACITY = 1000
 Q_NETWORK_ITERATION = 100
 epochs = 50
 epochs = 100
+epochs = 10
+
 NUM_ACTIONS = 6
 his_actions = 4
 subscale = 3/4
@@ -238,9 +240,10 @@ def main(args):
                     dqn.learn()
 
                 # Save bounding box for image 009472 after each 10 epochs
-                if image_name == "001012" and (i + 1) % 10 == 0:
-                    draw_bounding_box(image_original, bbx,
-                                      i + 1, step, image_name)
+                # if image_name == "001012" and (i + 1) % 10 == 0:
+                image_copy = image_original.copy()
+                draw_bounding_box(image_copy, bbx,
+                                  i + 1, step, image_name)
 
                 # termation
                 if action == 5:
