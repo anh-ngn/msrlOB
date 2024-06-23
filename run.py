@@ -304,7 +304,7 @@ def main(args):
                 image).cpu().detach().numpy().reshape(7*7*512)
         state = np.concatenate([history_action, vector])
         step = 0
-        steps = [0 for i in range(10)]
+        steps = [0 for i in range(11)]
         while (step < 10):
             iou = cal_iou(bbx, bbx_gt)
             if iou > 0.4:
