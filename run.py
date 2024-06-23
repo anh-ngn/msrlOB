@@ -289,6 +289,7 @@ def main(args):
     print("single_plane_image_names and single_plane_image_gts saved")
     # print out the average IOU
     total_iou = 0
+    steps = [0 for i in range(11)]
     for index, image_name in enumerate(single_plane_image_names):
         image_path = os.path.join(
             path_voc + "JPEGImages", image_name + ".jpg")
@@ -304,7 +305,6 @@ def main(args):
                 image).cpu().detach().numpy().reshape(7*7*512)
         state = np.concatenate([history_action, vector])
         step = 0
-        steps = [0 for i in range(11)]
         while (step < 10):
             iou = cal_iou(bbx, bbx_gt)
             if iou > 0.4:
