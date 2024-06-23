@@ -304,6 +304,7 @@ def main(args):
                 image).cpu().detach().numpy().reshape(7*7*512)
         state = np.concatenate([history_action, vector])
         step = 0
+        steps = [0 for i in range(10)]
         while (step < 10):
             iou = cal_iou(bbx, bbx_gt)
             if iou > 0.4:
@@ -317,11 +318,13 @@ def main(args):
             bbx = new_bbx
             step += 1
         total_iou += cal_iou(bbx, bbx_gt)
+        steps[step] += 1
         # write out bbx, bbx_gt to file
         with open('bbx.txt', 'a') as f:
             f.write("bbx: {}, bbx_gt: {}\n".format(bbx, bbx_gt))
     print("average IOU is {:.3f}".format(
         total_iou/len(single_plane_image_names)))
+    print(steps)
 
 
 if __name__ == '__main__':
